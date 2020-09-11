@@ -7,15 +7,17 @@ function Home() {
       <div className="home__container">
         <img
           className="home__image"
-          src="data:image/jpeg;base64,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"
+          src="https://images-eu.ssl-images-amazon.com/images/G/02/digital/video/gateway/placement/launch/All_Or_Nothing_Tottenham_Hotspur_S1/AONT_S1_GWBleedingHero_FT_COVIDUPDATE_XSite_1500X600_PV_en-GB._CB406302419_.jpg"
         />
         <div className="home__row">
           <Product
+            id="1"
             title="Beats Headphones"
             price="16.99"
             image="productImages/headPhones.jpg"
           />
           <Product
+            id="2"
             title="Camera"
             price="20.99"
             image="productImages/camera.jpg"
@@ -23,16 +25,19 @@ function Home() {
         </div>
         <div className="home__row">
           <Product
+            id="3"
             title="Beats Headphones"
             price="16.99"
             image="productImages/headPhones.jpg"
           />
           <Product
+            id="4"
             title="Beats Headphones"
             price="16.99"
             image="productImages/headPhones.jpg"
           />
           <Product
+            id="5"
             title="Beats Headphones"
             price="16.99"
             image="productImages/headPhones.jpg"
@@ -40,11 +45,13 @@ function Home() {
         </div>
         <div className="home__row">
           <Product
+            id="6"
             title="Beats Headphones"
             price="16.99"
             image="productImages/headPhones.jpg"
           />
           <Product
+            id="7"
             title="Beats Headphones"
             price="16.99"
             image="productImages/headPhones.jpg"
