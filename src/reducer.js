@@ -6,7 +6,7 @@ export const initialState = {
 
 //Selector
 export const getBasketTotal = basket =>
-  basket?.reduce((amount, item) => parseFloat(item.price) + amount, 0);
+  basket?.reduce((amount, item) => parseInt(item.price) + amount, 0);
 
 //This is the listener present in every component
 const reducer = (state, action) => {
@@ -15,6 +15,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         basket: [...state.basket, action.item]
+      };
+    case "EMPTY_BASKET":
+      return {
+        ...state,
+        basket: []
       };
     case "REMOVE_FROM_BASKET":
       //finding index of that item

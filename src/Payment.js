@@ -10,7 +10,7 @@ import axios from "./axios";
 
 function Payment() {
   const history = useHistory();
-  const [{ basket, user }] = useStateValue();
+  const [{ basket, user }, dispatch] = useStateValue();
 
   const stripe = useStripe();
   const elements = useElements();
@@ -31,11 +31,14 @@ function Payment() {
         //stripe expects the total in a currencies subunits
         url: `/payments/create?total=${getBasketTotal(basket) * 100}`
       });
+      console.log(response.data);
       setClientSecret(response.data.clientSecret);
     };
 
     getClientSecret();
   }, [basket]); //this function will execute whenever the basket changes
+
+  console.log("Secret key --- ", clientSecret);
 
   const handleSubmit = async e => {
     //stripe function
@@ -49,12 +52,17 @@ function Payment() {
         }
       })
       .then(({ paymentIntent }) => {
+        console.log("qqqq", paymentIntent);
         //paymentIntent = payment configuration
         setSucceeded(true);
         SetError(null);
         setProcessing(false);
 
-        history.replaceState("/orders");
+        dispatch({
+          type: "EMPTY_BASKET"
+        });
+
+        history.replace("/orders");
       });
   };
   const handleChange = e => {
