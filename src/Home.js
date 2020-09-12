@@ -14,12 +14,14 @@ function Home() {
             id="1"
             title="Beats Headphones"
             price="16.99"
+            rating={2}
             image="productImages/headPhones.jpg"
           />
           <Product
             id="2"
             title="Camera"
             price="20.99"
+            rating={2}
             image="productImages/camera.jpg"
           />
         </div>
@@ -28,18 +30,21 @@ function Home() {
             id="3"
             title="Beats Headphones"
             price="16.99"
+            rating={2}
             image="productImages/headPhones.jpg"
           />
           <Product
             id="4"
             title="Beats Headphones"
             price="16.99"
+            rating={2}
             image="productImages/headPhones.jpg"
           />
           <Product
             id="5"
             title="Beats Headphones"
             price="16.99"
+            rating={2}
             image="productImages/headPhones.jpg"
           />
         </div>
@@ -48,12 +53,14 @@ function Home() {
             id="6"
             title="Beats Headphones"
             price="16.99"
+            rating={2}
             image="productImages/headPhones.jpg"
           />
           <Product
             id="7"
             title="Beats Headphones"
             price="16.99"
+            rating={2}
             image="productImages/headPhones.jpg"
           />
         </div>

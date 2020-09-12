@@ -1,0 +1,343 @@
+webpackHotUpdate("main",{
+
+/***/ "./src/Payment.js":
+/*!************************!*\
+  !*** ./src/Payment.js ***!
+  \************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Payment_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Payment.css */ "./src/Payment.css");
+/* harmony import */ var _Payment_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_Payment_css__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _StateProvider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StateProvider */ "./src/StateProvider.js");
+/* harmony import */ var _CheckoutProduct__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CheckoutProduct */ "./src/CheckoutProduct.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @stripe/react-stripe-js */ "./node_modules/@stripe/react-stripe-js/dist/react-stripe.umd.js");
+/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var react_currency_format__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-currency-format */ "./node_modules/react-currency-format/lib/currency-format.js");
+/* harmony import */ var react_currency_format__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_currency_format__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _reducer__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./reducer */ "./src/reducer.js");
+/* harmony import */ var _axios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./axios */ "./src/axios.js");
+/* harmony import */ var _firebase__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./firebase */ "./src/firebase.js");
+var _jsxFileName = "D:\\React js\\Amazon-clone\\amazon-clone\\src\\Payment.js";
+
+
+
+
+
+
+
+
+
+
+
+function Payment() {
+  const history = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["useHistory"])();
+  const [{
+    basket,
+    user
+  }, dispatch] = Object(_StateProvider__WEBPACK_IMPORTED_MODULE_2__["useStateValue"])();
+  const stripe = Object(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__["useStripe"])();
+  const elements = Object(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__["useElements"])();
+  const [error, SetError] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(null);
+  const [disabled, SetDisabled] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(true);
+  const [processing, setProcessing] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])("");
+  const [succeeded, setSucceeded] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false);
+  const [clientSecret, setClientSecret] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(true); //This is the key that we get from the stripe to execute a particular transactions
+
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    //generate the special stripe secret which allows to charge a customer
+    const getClientSecret = async () => {
+      const response = await Object(_axios__WEBPACK_IMPORTED_MODULE_8__["default"])({
+        method: "post",
+        //stripe expects the total in a currencies subunits
+        url: `/payments/create?total=${Object(_reducer__WEBPACK_IMPORTED_MODULE_7__["getBasketTotal"])(basket) * 100}`
+      });
+      console.log(response.data);
+      setClientSecret(response.data.clientSecret);
+    };
+
+    getClientSecret();
+  }, [basket]); //this function will execute whenever the basket changes
+
+  console.log("Secret key --- ", clientSecret);
+
+  const handleSubmit = async e => {
+    //stripe function
+    e.preventDefault();
+    setProcessing(true);
+    const payload = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__["CardElement"])
+      }
+    }).then(({
+      paymentIntent
+    }) => {
+      console.log("qqqq", basket); //paymentIntent = payment configuration
+
+      console.log(user);
+      console.log(_firebase__WEBPACK_IMPORTED_MODULE_9__["db"]);
+      _firebase__WEBPACK_IMPORTED_MODULE_9__["db"].collection("users").doc(user === null || user === void 0 ? void 0 : user.uid).collection("orders").doc(paymentIntent === null || paymentIntent === void 0 ? void 0 : paymentIntent.id).set({
+        basket: basket,
+        amount: paymentIntent === null || paymentIntent === void 0 ? void 0 : paymentIntent.amount,
+        created: paymentIntent === null || paymentIntent === void 0 ? void 0 : paymentIntent.created
+      });
+      setSucceeded(true);
+      SetError(null);
+      setProcessing(false);
+      dispatch({
+        type: "EMPTY_BASKET"
+      });
+      history.replace("/orders");
+    });
+  };
+
+  const handleChange = e => {
+    //Listen for changes in the card element
+    //and display any errors as the customer types their card details
+    SetDisabled(e.empty);
+    SetError(e.error ? e.error.message : "");
+  };
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "payment",
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 92,
+      columnNumber: 5
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "payment__container",
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 93,
+      columnNumber: 7
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 94,
+      columnNumber: 9
+    }
+  }, "Checkout ( ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Link"], {
+    to: "/checkout",
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 95,
+      columnNumber: 22
+    }
+  }, basket === null || basket === void 0 ? void 0 : basket.length, " items"), ")"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "payment__section",
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 97,
+      columnNumber: 9
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "payment__title",
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 98,
+      columnNumber: 11
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 99,
+      columnNumber: 13
+    }
+  }, "Delivery Address")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "payment__address",
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 101,
+      columnNumber: 11
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 102,
+      columnNumber: 13
+    }
+  }, user === null || user === void 0 ? void 0 : user.email), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 103,
+      columnNumber: 13
+    }
+  }, "Patel Nagar"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 104,
+      columnNumber: 13
+    }
+  }, "New Delhi"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "payment__section",
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 107,
+      columnNumber: 9
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "payment__title",
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 108,
+      columnNumber: 11
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 109,
+      columnNumber: 13
+    }
+  }, "Review items and Delivery")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "payment__items",
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 111,
+      columnNumber: 11
+    }
+  }, basket === null || basket === void 0 ? void 0 : basket.map(item => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CheckoutProduct__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    id: item.id,
+    image: item.image,
+    title: item.title,
+    price: item.price,
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 113,
+      columnNumber: 15
+    }
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "payment__section",
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 122,
+      columnNumber: 9
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "payment__title",
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 123,
+      columnNumber: 11
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 124,
+      columnNumber: 13
+    }
+  }, "Payment Method")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "payment__details",
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 126,
+      columnNumber: 11
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+    onSubmit: handleSubmit,
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 127,
+      columnNumber: 13
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__["CardElement"], {
+    onChange: handleChange,
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 128,
+      columnNumber: 15
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "payment__priceContainer",
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 129,
+      columnNumber: 15
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_currency_format__WEBPACK_IMPORTED_MODULE_6___default.a, {
+    renderText: value => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", {
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 133,
+        columnNumber: 23
+      }
+    }, "Order Total: ", value)),
+    decimalScale: 2,
+    value: Object(_reducer__WEBPACK_IMPORTED_MODULE_7__["getBasketTotal"])(basket),
+    displayType: "text",
+    thousandSeparator: true,
+    prefix: "$",
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 130,
+      columnNumber: 17
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    disabled: processing || disabled || succeeded,
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 142,
+      columnNumber: 17
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 143,
+      columnNumber: 19
+    }
+  }, processing ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 143,
+      columnNumber: 39
+    }
+  }, "Processing") : "Buy Now"))), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 147,
+      columnNumber: 25
+    }
+  }, error))))));
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Payment);
+
+/***/ })
+
+})
+//# sourceMappingURL=main.fc99fb4e6ce84a12ace9.hot-update.js.map

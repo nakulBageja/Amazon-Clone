@@ -77,7 +77,9 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 -useStateValue which is part of ContextAPI, helps us to access data layer from any component
 -Stripe for payments
 -axios
+-moment
 
 backend :
 -express
 -cors
+-NoSQL database
