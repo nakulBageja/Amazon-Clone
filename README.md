@@ -79,7 +79,11 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 -axios
 -moment
 
+--deploying frontend: firebase init -> something -> something-> firebase deploy
+
 backend :
 -express
 -cors
 -NoSQL database
+
+-deploying backend : "firebase deploy --only functions"

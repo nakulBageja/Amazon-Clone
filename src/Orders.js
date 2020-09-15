@@ -11,27 +11,27 @@ function Orders() {
   const [orders, setOrder] = useState([]);
 
   //fetch the data from firebase and store the data into order variable
+  if (user) {
+    db.collection("users")
+      .doc(user?.uid)
+      .collection("orders")
+      .orderBy("created", "desc")
+      .onSnapshot(snapshot =>
+        setOrder(
+          snapshot.docs.map(doc => ({
+            id: doc.id,
+            data: doc.data()
+          }))
+        )
+      );
+  } else {
+    setOrder([]);
+  }
 
-  useEffect(() => {
-    if (user) {
-      db.collection("users")
-        .doc(user?.uid)
-        .collection("orders")
-        .orderBy("created", "desc")
-        .onSnapshot(snapshot =>
-          setOrder(
-            snapshot.docs.map(doc => ({
-              id: doc.id,
-              data: doc.data()
-            }))
-          )
-        );
-    } else {
-      setOrder([]);
-    }
-  }, [user]);
+  // useEffect(() => {
 
-  console.log("2", orders);
+  // }, [user]);
+
   return (
     <div className="orders">
       <h3>YOUR ORDERS</h3>
